@@ -1,0 +1,49 @@
+//Difficulty: Medium
+//Problem Number: 90
+
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> a;
+        sort(nums.begin(), nums.end());
+        a.push_back({});
+        vector<int> take(nums);
+        a.push_back(take);
+        int st = 0;
+
+        for(int i = 0; i < nums.size() -1 ; i++) {
+            int end = a.size();
+            for(; st < end; st++) {
+                vector<int> b = a[st];
+                for(int j = 0; j < b.size(); j++) {
+                    b.erase(b.begin() + j);
+                    int k;
+                    for(k = end; k < a.size(); k++) {
+                        if(checkDuplicates(b, a[k])) {
+                            break;
+                        }
+                    }
+                    if(k == a.size()) {
+                        a.push_back(b);
+                    }
+                    b = a[st];
+                }
+            }
+                
+            st = end;
+        }
+
+        return a;
+    }
+
+    bool checkDuplicates(vector<int> a, vector<int> b) {
+        if(a.size() != b.size())
+            return false;
+        for(int i = 0; i < a.size(); i++) {
+            if(a[i] != b[i])
+                return false;
+        }
+        return true;
+    }
+
+};

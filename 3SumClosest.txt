@@ -1,0 +1,45 @@
+//Difficulty: Medium
+//Problem Number: 16
+
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        int closest = nums[0] + nums[1] + nums[2];
+        for(int i = 0; i < nums.size(); i++) { 
+            int a = twoSumClosest(nums, target - nums[i], i);
+            if(abs(a + nums[i] - target) < abs(closest - target))
+                closest = a + nums[i];
+        }
+
+        return closest;
+    }
+
+    int twoSumClosest(vector<int>& nums, int target, int exclude) {
+        int closest;
+        int i = exclude; 
+        int j = nums.size() - 1;
+        while(i < j) {
+            if(i == exclude) {
+                i++;
+                continue;
+            }
+            else if(j == exclude) {
+                j--;
+                continue;
+            }
+            if((nums[i]+nums[j]) - target == 0)
+                return target;
+            else if(abs(nums[i]+nums[j]-target) < abs(closest - target))
+                closest = nums[i]+nums[j];
+            if((nums[i]+nums[j])-target > 0) {
+                j--;
+            }
+            else
+                i++;
+            
+        }
+        return closest;
+    }
+
+};

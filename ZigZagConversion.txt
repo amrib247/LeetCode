@@ -1,0 +1,38 @@
+//Difficulty: Medium
+//Problem Number: 6
+
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if (numRows == 1 || numRows >= s.length()) {
+            return s;
+        }
+
+        string ret = "";
+
+        for(int i = 0; i < s.length(); i += (2*(numRows-1))) {
+            ret += s[i];
+        }
+        
+        for(int i = 1; i < numRows - 1; i++) {
+            for(int j = i; j < s.length();) {
+                ret += s[j];
+                //cout << s[j] <<" Height: " << i <<  " Index: " << j;
+                if((j-i) % (2*(numRows-1)) == 0) {
+                  //  cout << " vetical element" << endl;
+                    j += 2* (numRows-1-i);
+                }
+                else {
+                    j += 2*i;
+                    //cout << " diaggonal element" << endl;
+                }
+            }
+        }
+        
+        for(int i = numRows-1; i < s.length(); i+= (2*(numRows-1))) {
+            ret += s[i];
+        }
+
+        return ret;
+    }
+};

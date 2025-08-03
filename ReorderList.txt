@@ -1,0 +1,73 @@
+//Difficulty: Medium
+//Problem Number: 143
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head == nullptr || head->next == nullptr) {
+            return;
+        }
+        bool count = false;
+        ListNode* curr = head;
+        ListNode* mid = head;
+
+        while(curr->next != nullptr) {
+            if(count) {
+                mid = mid->next;
+                count = false;
+            }
+            else
+                count = true;
+            curr = curr->next;
+        }
+
+        ListNode* revhead = new ListNode(mid->next->val, nullptr);
+        curr = mid->next;
+        while(curr->next != nullptr) {
+            revhead = new ListNode(curr->next->val, revhead);
+            curr = curr->next;
+        }
+
+        display(revhead);
+        
+        curr = head;
+        ListNode* revCurr = revhead;
+        ListNode* temp = nullptr;
+        ListNode* temp2;
+        while(curr != mid) {
+            temp2 = revCurr->next;
+            temp = curr->next;
+            curr->next = revCurr;
+            revCurr->next = temp;
+            revCurr = temp2;
+            curr = temp;
+        }
+
+        if(revCurr != nullptr) {
+            curr->next = revCurr;
+            revCurr->next = nullptr;
+            return;
+        }
+
+        curr->next = nullptr;
+
+    }
+
+    void display(ListNode* ptr) {
+        while(ptr != nullptr) {
+            cout << ptr->val << " ";
+            ptr = ptr->next;
+        }
+        cout << endl;
+    }
+};
